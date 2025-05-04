@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LoginScreen from '../screens/LoginScreen';
 import AssignmentQueueScreen from '../screens/AssignmentQueueScreen';
 import AssignmentDetailScreen from '../screens/AssignmentDetailScreen';
 
-const Stack = createStackNavigator();
+// React Navigation v7 uses createNativeStackNavigator instead of createStackNavigator
+const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
   return (

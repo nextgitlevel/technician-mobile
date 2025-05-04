@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 // API URL for the backend
 const API_URL = 'http://localhost:5000/api';
@@ -41,36 +42,32 @@ export default function LoginScreen() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      console.log('Attempting to login...');
+      
+      // Using axios with the newer package
+      const response = await axios.post(`${API_URL}/auth/login`, {
+        email,
+        password
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
+      const { token, user } = response.data;
 
       // Verify technician role
-      if (data.user.role !== 'Technician') {
-        Alert.alert('Access Denied', 'App for technicians only');
+      if (user.role !== 'Technician') {
+        Alert.alert('Access Denied', 'This app is only for technicians');
         setLoading(false);
         return;
       }
 
-      // Store auth data
-      await AsyncStorage.setItem('token', data.token);
-      await AsyncStorage.setItem('user', JSON.stringify(data.user));
+      // Store authentication data
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('user', JSON.stringify(user));
 
       // Navigate to queue
       router.replace('/queue');
     } catch (error) {
-      Alert.alert('Login Failed', error.message || 'Connection error');
-      console.error(error);
+      console.error('Login error:', error);
+      Alert.alert('Login Failed', 'Invalid credentials or server error');
     } finally {
       setLoading(false);
     }
@@ -87,7 +84,7 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>NextLevel Technician</Text>
-      <Text style={styles.subtitle}>Login</Text>
+      <Text style={styles.subtitle}>Login to your account</Text>
       
       <View style={styles.form}>
         <TextInput
@@ -127,7 +124,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
-    padding: 20
+    padding: 20,
+    justifyContent: 'center',
   },
   centered: {
     justifyContent: 'center',
@@ -138,13 +136,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#3b82f6',
     textAlign: 'center',
-    marginTop: 60
+    marginBottom: 10
   },
   subtitle: {
     fontSize: 16,
     color: '#666',
     textAlign: 'center',
-    marginBottom: 40
+    marginBottom: 30
   },
   form: {
     backgroundColor: '#fff',
@@ -162,7 +160,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 8,
     marginBottom: 16,
-    paddingHorizontal: 12,
+    paddingHorizontal: 15,
     backgroundColor: '#fafafa'
   },
   button: {
