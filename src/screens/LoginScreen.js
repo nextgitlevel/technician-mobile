@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { router } from 'expo-router';
 
 const API_URL = 'http://localhost:5000/api';
 
@@ -42,7 +43,8 @@ const LoginScreen = ({ navigation }) => {
       setPassword('');
       setLoading(false);
       
-      navigation.replace('TaskQueue');
+      // Use expo-router instead of the old navigation
+      router.replace('/queue');
     } catch (error) {
       console.error('Login error:', error);
       setLoading(false);

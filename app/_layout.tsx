@@ -1,21 +1,32 @@
-import { Stack } from 'expo-router';
+import { Stack, SplashScreen, router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, ActivityIndicator } from 'react-native';
 
+// Prevent auto hiding of splash screen
+SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
   const [initializing, setInitializing] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     // Check for auth on first load
     const checkAuth = async () => {
       try {
-        // Wait a bit to avoid flash of loading screen
+        const token = await AsyncStorage.getItem('token');
+        const user = await AsyncStorage.getItem('user');
+        
+        // Determine if user is authenticated
+        setAuthenticated(Boolean(token && user));
+
+        // Give time to load app fully
         await new Promise(resolve => setTimeout(resolve, 200));
-        setInitializing(false);
       } catch (error) {
         console.error('Error checking auth', error);
+      } finally {
         setInitializing(false);
+        SplashScreen.hideAsync();
       }
     };
     
@@ -38,9 +49,21 @@ export default function RootLayout() {
         animation: 'slide_from_right',
       }}
     >
-      <Stack.Screen name="index" />
+      <Stack.Screen 
+        name="index" 
+        options={{
+          // Make sure login and app stack don't transition
+          animation: 'none',
+        }}  
+      />
       <Stack.Screen name="login" />
-      <Stack.Screen name="queue" />
+      <Stack.Screen 
+        name="queue" 
+        options={{
+          // Prevent going back to login screen
+          gestureEnabled: false,
+        }}
+      />
       <Stack.Screen 
         name="Assignment/[id]" 
         options={{

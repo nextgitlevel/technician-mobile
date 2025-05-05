@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator,
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import ENV from './config/environment';
 
-// API URL for the backend
-const API_URL = 'http://localhost:5000/api';
+// API URL for the backend comes from environment configuration
+const API_URL = ENV.API_URL;
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');

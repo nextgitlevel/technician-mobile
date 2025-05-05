@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Alert } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ENV from '../config/environment';
 
-// API URL for the backend
-const API_URL = 'http://localhost:5000/api';
+// API URL for the backend comes from environment configuration
+const API_URL = ENV.API_URL;
 
 export default function AssignmentDetailScreen() {
   const { id } = useLocalSearchParams();

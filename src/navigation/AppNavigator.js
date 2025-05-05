@@ -1,29 +1,24 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { router } from 'expo-router';
 
-import LoginScreen from '../screens/LoginScreen';
-import AssignmentQueueScreen from '../screens/AssignmentQueueScreen';
-import AssignmentDetailScreen from '../screens/AssignmentDetailScreen';
-
-// React Navigation v7 uses createNativeStackNavigator instead of createStackNavigator
-const Stack = createNativeStackNavigator();
+// This file is now just a compatibility layer for legacy screen imports
+// It redirects to the new expo-router paths
 
 const AppNavigator = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator 
-        initialRouteName="Login" 
-        screenOptions={{ 
-          headerShown: false 
-        }}
-      >
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="AssignmentQueue" component={AssignmentQueueScreen} />
-        <Stack.Screen name="AssignmentDetail" component={AssignmentDetailScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  // This component is now just a bridge to expo-router
+  // It shouldn't be used directly anymore
+  
+  React.useEffect(() => {
+    // Redirect to the main app route
+    router.replace('/');
+  }, []);
+  
+  return null;
 };
+
+// Helper functions to navigate from older components
+AppNavigator.navigateToLogin = () => router.replace('/');
+AppNavigator.navigateToQueue = () => router.replace('/queue');
+AppNavigator.navigateToAssignment = (id) => router.replace(`/assignment/${id}`);
 
 export default AppNavigator;
