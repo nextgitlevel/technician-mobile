@@ -37,4 +37,7 @@ yarn-error.*
 
 app-example
 
+# IDE
+.idea/
+
 **/.claude/settings.local.json
