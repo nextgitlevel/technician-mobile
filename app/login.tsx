@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { router } from 'expo-router';
+import AppNavigation from './navigation';
 
 export default function LoginRedirect() {
-  // Redirect to main login page
+  // Redirect to main login page using our centralized navigation module
   useEffect(() => {
-    router.replace('/');
+    AppNavigation.goToLogin();
   }, []);
   
   // Return null since this is just a redirect component

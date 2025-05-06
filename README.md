@@ -1,50 +1,83 @@
-# Welcome to your Expo app 👋
+# NextLevel Technician Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile application for field technicians to manage their work assignments, built with React Native and Expo.
 
-## Get started
+## Project Structure
 
-1. Install dependencies
+The application uses Expo Router for navigation and follows a modern folder structure:
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+technician-mobile/
+├── app/                    # Main application code using Expo Router
+│   ├── (tabs)/             # Tab navigation screens
+│   ├── Assignment/         # Assignment screens 
+│   ├── config/             # Configuration files
+│   ├── utils/              # Utility functions
+│   ├── _layout.tsx         # Root layout for navigation
+│   ├── index.js            # Login screen
+│   ├── login.tsx           # Login redirect
+│   ├── navigation.js       # Centralized navigation
+│   └── queue.js            # Assignment queue screen
+├── assets/                 # App assets (images, fonts)
+├── components/             # Reusable components
+│   ├── ui/                 # UI components
+│   └── ...
+├── constants/              # App constants
+├── hooks/                  # Custom React hooks
+└── src_old/                # Archived legacy code
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Features
 
-## Learn more
+- Authentication system for technicians
+- Assignment queue management
+- Detailed assignment views
+- Offline support for field work
+- Location-based assignment finding
+- Camera integration for documentation
 
-To learn more about developing your project with Expo, look at the following resources:
+## Development
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Prerequisites
 
-## Join the community
+- Node.js (v18 or newer)
+- Expo CLI
+- Android Studio (for Android development)
+- Xcode (for iOS development, macOS only)
 
-Join our community of developers creating universal apps.
+### Setup
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+1. Install dependencies:
+   ```
+   npm install --legacy-peer-deps
+   ```
+
+2. Start the development server:
+   ```
+   npm start
+   ```
+
+3. Run on specific platform:
+   ```
+   npm run android  # For Android
+   npm run ios      # For iOS
+   npm run web      # For web
+   ```
+
+### Building Native Apps
+
+The project is set up to use EAS Build:
+
+```
+npx eas build --platform android
+npx eas build --platform ios
+```
+
+## Troubleshooting
+
+If you encounter dependency conflicts, use the `--legacy-peer-deps` flag with npm install.
+
+For issues with native modules on prebuild, try:
+```
+npx expo prebuild --clean
+```

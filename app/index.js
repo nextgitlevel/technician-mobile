@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
-import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import ENV from './config/environment';
+import AppNavigation from './navigation';
 
 // API URL for the backend comes from environment configuration
 const API_URL = ENV.API_URL;
@@ -21,11 +21,10 @@ export default function LoginScreen() {
 
   const checkExistingAuth = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
-      const user = await AsyncStorage.getItem('user');
+      const { isAuthenticated } = await AppNavigation.checkAuth();
       
-      if (token && user) {
-        router.replace('/queue');
+      if (isAuthenticated) {
+        AppNavigation.goToQueue();
       }
     } catch (error) {
       console.error('Auth check error:', error);
@@ -64,8 +63,8 @@ export default function LoginScreen() {
       await AsyncStorage.setItem('token', token);
       await AsyncStorage.setItem('user', JSON.stringify(user));
 
-      // Navigate to queue
-      router.replace('/queue');
+      // Navigate to queue using our centralized navigation
+      AppNavigation.goToQueue();
     } catch (error) {
       console.error('Login error:', error);
       Alert.alert('Login Failed', 'Invalid credentials or server error');

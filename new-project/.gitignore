@@ -9,11 +9,8 @@ dist/
 web-build/
 expo-env.d.ts
 
-# Native build folders
-android/
-ios/
-
 # Native
+.kotlin/
 *.orig.*
 *.jks
 *.p8
@@ -38,10 +35,3 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
-
-app-example
-
-# IDE
-.idea/
-
-**/.claude/settings.local.json
